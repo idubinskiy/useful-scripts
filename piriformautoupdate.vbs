@@ -33,7 +33,7 @@ ProgramFiles = WshShell.ExpandEnvironmentStrings("%programfiles%")
 
 WorkingDir = objFSO.GetParentFolderName(objFSO.GetFile(Wscript.ScriptFullName))
 
-Set logfile = objFSO.OpenTextFile(WorkingDir & "\updater.log", 8, True)
+Set logfile = objFSO.OpenTextFile(WorkingDir & "\piriformautoupdate.log", 8, True)
 
 logfile.WriteLine("---------------Begin Script---------------")
 logfile.WriteLine(Date & " " & Time & ":")
@@ -118,14 +118,14 @@ Sub UpdateProgram(ProgramName)
 		WshShell.Run "curl -L -o " & ProgramName & ".zip http://www.piriform.com/" & ProgramName & "/download/portable/downloadfile", 0, 1
 		logfile.WriteLine("Extracting latest version of " & ProgramName & ".")
 		WshShell.Run "7z e " & ProgramName & ".zip", 0, 1
-		WshShell.CurrentDirectory = ProgramFiles & "\" & ProgramName & "\"
+		WshShell.CurrentDirectory = ProgramFiles & "\" & ProgramName
 		If objFSO.FileExists(ProgramName & ".exe.old") Then
 			objFSO.DeleteFile ProgramName & ".exe.old"
 		End If
 		If objFSO.FileExists(ProgramName & "64.exe.old") Then
 			objFSO.DeleteFile ProgramName & "64.exe.old"
 		End If
-		logfile.WriteLine("Making backup of installed version " & ProgramName & ".")
+		logfile.WriteLine("Making backup of installed version of " & ProgramName & ".")
 		objFSO.CopyFile ProgramName & ".exe", ProgramName & ".exe.old"
 		objFSO.CopyFile ProgramName & "64.exe", ProgramName & "64.exe.old"
 		logfile.WriteLine("Updating " & ProgramName & ".")
